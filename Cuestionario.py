@@ -71,4 +71,68 @@ def cargar_preguntas():
     return preguntas
 
 
+def mostrar_pregunta(pregunta, numero, total):
+    print(f"\nPregunta {numero} de {total}: {pregunta['pregunta']}")
+    for opcion in pregunta["opciones"]:
+        print(opcion)
+
+def obtener_respuesta():
+    respuesta = input("Tu respuesta (A, B, C o D): ").upper()
+    while respuesta not in ["A", "B", "C", "D"]:
+        print("Respuesta inválida. Intenta de nuevo.")
+        respuesta = input("Tu respuesta (A, B, C o D): ").upper()
+    return respuesta
+
+def corregir_respuesta(respuesta, correcta):
+    if respuesta == correcta:
+        print("¡Correcto!")
+        return True
+    else:
+        print(f"Incorrecto. La respuesta correcta era {correcta}.")
+        return False
+
+def cuestionario(preguntas_tema):
+    aciertos = 0
+    total = len(preguntas_tema)
+    for i, pregunta in enumerate(preguntas_tema, start=1):
+        mostrar_pregunta(pregunta, i, total)
+        respuesta = obtener_respuesta()
+        if corregir_respuesta(respuesta, pregunta["respuesta_correcta"]):
+            aciertos += 1
+    print(f"\nHas terminado el cuestionario. Aciertos: {aciertos} de {total}")
+    porcentaje = (aciertos / total) * 100
+    print(f"Porcentaje de aciertos: {porcentaje:.2f}%")
+    if porcentaje >= 80:
+        print("!Enhorabuena crack¡")
+    elif porcentaje >= 50:
+        print("Muy bien aunque se puede mejorar.")
+    else:
+        print("Hay que practicar más...")
+
+def main():
+    preguntas = cargar_preguntas()
+    while True:
+        print("\n Bienvenido al cuestionario")
+        print("\n--- MENÚ ---")
+        print("1 - Empezar cuestionario")
+        print("2 - Salir")
+        opcion = input("Selecciona una opción: ")
+        if opcion == "1":
+            print("\nElige un tema:")
+            print("1 - Ciudades")
+            print("2 - Animales")
+            tema = input("Selecciona un tema (1 o 2): ")
+            if tema == "1":
+                cuestionario(preguntas["ciudades"])
+            elif tema == "2":
+                cuestionario(preguntas["animales"])
+            else:
+                print("Tema inválido. Regresando al menú.")
+        elif opcion == "2":
+            print("¡Hasta luego!")
+            break
+        else:
+            print("Opción inválida, intenta de nuevo.")
+
+main()
 
